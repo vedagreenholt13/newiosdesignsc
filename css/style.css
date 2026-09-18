@@ -1,0 +1,532 @@
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-image: url('../images/bg.png');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        /* Dark Backdrop Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .overlay.show { opacity: 1; visibility: visible; }
+
+        /* Apple Pay Bottom Sheet */
+        .apple-pay-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px 24px 0 0;
+            padding: 24px 20px 20px 20px;
+            transition: bottom 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            z-index: 2000;
+            max-width: 500px;
+            margin: 0 auto;
+            right: 0;
+        }
+        .apple-pay-sheet.show { bottom: 0; }
+
+        /* Close Button ('X') */
+        .close-icon-btn {
+            background: #e5e5ea;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 14px;
+            color: #3a3a3c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        /* Real iPhone Floating Face ID Box */
+        .floating-status-box {
+            position: absolute;
+            top: -75px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            background: rgba(35, 35, 38, 0.92);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            color: white;
+            width: 170px;
+            height: 170px;
+            border-radius: 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+            z-index: 2500;
+            text-align: center;
+            border: 0.5px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* Authentic Face ID Vector Icon Style */
+        .face-id-graphic {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 6px;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 7V5C4 4.44772 4.44772 4 5 4H7' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M17 4H19C19.5523 4 20 4.44772 20 5V7' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M4 17V19C4 19.5523 4.44772 20 5 20H7' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M17 20H19C19.5523 20 20 19.5523 20 19V17' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M9 9H9.01M15 9H15.01M10 13C10 13 10.5 14 12 14C13.5 14 14 13 14 13' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            animation: pulseFace 1.2s infinite alternate;
+        }
+        @keyframes pulseFace {
+            0% { transform: scale(1); opacity: 0.85; }
+            100% { transform: scale(1.08); opacity: 1; }
+        }
+        .face-title {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* Success Checkmark Graphic */
+        .success-icon-circle {
+            width: 44px;
+            height: 44px;
+            border: 3px solid #34c759;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .success-icon-circle::after {
+            content: '✔';
+            font-size: 24px;
+            color: #34c759;
+            font-weight: bold;
+            margin-top: -2px;
+        }
+        .done-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .done-amount {
+            font-size: 12px;
+            color: #aeaeb2;
+            font-weight: 400;
+        }
+
+        /* Sheet Rows & Typography */
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+            border-top: 1px solid #efeff4;
+  padding-top: 20px;
+        }
+
+        .card-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #efeff4;
+            margin-bottom: 15px;
+        }
+
+        .card-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1c1c1e;
+        }
+
+        .mastercard-badge {
+            background: #ff5f00;
+            width: 30px;
+            height: 19px;
+            border-radius: 4px;
+            position: relative;
+            display: inline-block;
+        }
+        .mastercard-badge::before, .mastercard-badge::after {
+            content: "";
+            position: absolute;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            top: 3px;
+        }
+        .mastercard-badge::before { background: #eb001b; left: 3px; opacity: 0.85; }
+        .mastercard-badge::after { background: #f79e1b; right: 3px; opacity: 0.85; }
+
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 14px;
+            color: #3a3a3c;
+        }
+
+        .details-row.subtotal {
+            color: #86868b;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d0d0d3;
+            padding-bottom: 10px;
+        }
+
+        .total-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 12px;
+            margin-bottom: 22px;
+            border-top: 1px solid #efeff4;
+        }
+
+        .merchant-name {
+            font-size: 14px;
+            color: #1c1c1e;
+        }
+
+        .total-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: -0.5px;
+        }
+
+        .processing-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #86868b;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #d1d1d6;
+            border-top: 2px solid #3a3a3c;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Top Messages Notification Banner with Smooth Slide Animations */
+        .top-notification {
+            position: fixed;
+            top: -180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 400px;
+            background: rgba(245, 245, 247, 0.96);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 22px;
+            padding: 12px 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+            color: #000;
+            z-index: 6000;
+            transition: top 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+        .top-notification.show { top: 15px; }
+        
+        .notif-app-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3px;
+            font-size: 12px;
+            color: #8e8e93;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+        .notif-app-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notif-icon {
+            width: 16px;
+            height: 16px;
+            background: #34c759;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .notif-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 2px;
+        }
+        .notif-desc {
+            font-size: 14px;
+            color: #0c62d3;
+            line-height: 1.35;
+        }
+        .notif-desc a {
+            color: #0c62d3;
+            text-decoration: underline;
+        }
+        .passcodes{
+            color: #0c62d3;
+            margin: 30px auto 0;
+            text-align: center;
+        }
+
+        /* Center Locked Alert Modal */
+        .locked-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .locked-modal-overlay.show { opacity: 1; visibility: visible; }
+
+        .locked-modal-box {
+            background: #1c1c1e;
+            color: white;
+            width: 88%;
+            max-width: 320px;
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .locked-title {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .locked-icon-area {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .locked-desc {
+            font-size: 13px;
+            color: #aeaeb2;
+            line-height: 1.45;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+        .locked-desc a {
+            color: #0a84ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .locked-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .locked-btn {
+            flex: 1;
+            padding: 12px 0;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-cancel { background: #676669; color: white; box-shadow: 0 4px 12px rgba(163, 164, 164, 0.4); }
+
+        .btn-call { background: #007aff; color: white; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4); }
+
+        .premium-card {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            transition: bottom 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            z-index: 500;
+            right: 0;
+    width: 600px;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 35px;
+    border-radius: 28px;
+    background: rgba(25, 27, 33, 0.95);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    color: #fff;
+        }
+        .premium-card.show { bottom: 7%; }
+
+.title {
+    font-size: 34px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #b8b8b8;
+    font-size: 20px;
+    margin-bottom: 35px;
+}
+
+.features {
+    background: rgba(255,255,255,0.03);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    font-size: 19px;
+    margin-bottom: 18px;
+    color: #f2f2f2;
+}
+
+.feature-item:last-child {
+    margin-bottom: 0;
+}
+
+.check {
+    width: 30px;
+    height: 30px;
+    background: #ffb52e;
+    color: #111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 18px;
+    font-size: 16px;
+}
+
+.plan {
+    font-size: 21px;
+    margin-bottom: 25px;
+}
+
+.amount {
+    font-size: 22px;
+    margin-bottom: 35px;
+}
+
+.amount span {
+    color: #ffb52e;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.checkout-btn {
+    height: 50px;
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    background: #e9a726;
+    color: #1b1b1b;
+    font-size: 18px;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.checkout-btn:hover {
+    background: #ffbd3d;
+    transform: translateY(-2px);
+}
+.alert-content {
+    display: flex;
+    align-items: flex-start;
+}
+.alert-icon {
+    margin-right: 15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+.alert-icon img{
+    width: 80px;
+}
+.lst-modal-overlay{
+    position: fixed;
+    top: 49%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+.lst-modal-overlay.show { opacity: 1; visibility: visible; }
+.lst-modal-overlay .locked-btn{
+    width: 100%;
+}
+.lst-modal-box{
+   color: white;
+  width: 88%;
+  max-width: 320px;
+  background: rgba(234, 234, 234, 0.89);
+  border-radius: 24px;
+  padding: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
